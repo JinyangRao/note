@@ -57,3 +57,5 @@ where S# in (Select S# from SC where C#='001');
 -- 求即学过001号课程，又学过002
 select S# from SC
 where C# = '001' and S# in (select S# from SC where C# = '002');
+
+
