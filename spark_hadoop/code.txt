@@ -19,8 +19,8 @@ package org.apache.spark.sql.catalyst.statsEstimation
 
 import java.sql.Date
 
+import org.apache.spark.sql.catalyst.expressions.{And, Attribute, AttributeMap, AttributeReference, EqualTo, GreaterThan, GreaterThanOrEqual, IsNotNull, LessThan, LessThanOrEqual, Literal, Not}
 import org.apache.spark.sql.catalyst.expressions.Literal.{FalseLiteral, TrueLiteral}
-import org.apache.spark.sql.catalyst.expressions._
 import org.apache.spark.sql.catalyst.plans._
 import org.apache.spark.sql.catalyst.plans.logical._
 import org.apache.spark.sql.catalyst.plans.logical.statsEstimation.EstimationUtils.{getOutputSize, nullColumnStat}
@@ -132,14 +132,14 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
     attrBool -> colStatBool // 3
   ))
 
-  /*
-  *  table1_String (attrInt_1_200, attrDouble_200, attrDecimal_200, attrDate_200, attrString_200 )
-  *  table1 (attrInt_1_200, attrDouble_200, attrDecimal_200, attrDate_200)
-  *  table2 (attrInt_201_400, attrFloat_200, attrDecimal_100, attrDouble_1_100)
-  *  table3 (attrInt_101_300, attrFloat_100, attrBool)
-  *  table4 (attrInt_1_100, attrDouble_50_149, attrDate_100)
-  *  table4_String (attrInt_1_100, attrDouble_50_149, attrDate_100, attrString_100)
-  */
+  /**
+   * table1_String (attrInt_1_200, attrDouble_200, attrDecimal_200, attrDate_200, attrString_200 )
+   * table1 (attrInt_1_200, attrDouble_200, attrDecimal_200, attrDate_200)
+   * table2 (attrInt_201_400, attrFloat_200, attrDecimal_100, attrDouble_1_100)
+   * table3 (attrInt_101_300, attrFloat_100, attrBool)
+   * table4 (attrInt_1_100, attrDouble_50_149, attrDate_100)
+   * table4_String (attrInt_1_100, attrDouble_50_149, attrDate_100, attrString_100)
+   */
 
   private val nameToAttr: Map[String, Attribute] = attributeMap.map(kv => kv._1.name -> kv._1)
   private val nameToColInfo: Map[String, (Attribute, ColumnStat)] =
@@ -278,17 +278,17 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
     */
 
 
-  /*
- * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
- * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
- * table3 (cint_101_300, cfloat_100, cbool)
- *
- * select *
- * from table1 cross join table2
- * cross join table3
- * where true
- *
- */
+  /**
+    * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
+    * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
+    * table3 (cint_101_300, cfloat_100, cbool)
+    *
+    * select *
+    * from table1 cross join table2
+    * cross join table3
+    * where true
+    *
+    */
   test("3 tables cross join where true") {
 
     /** execute join */
@@ -356,7 +356,8 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
       expectedRowCount = expectedRowCount)
   }
 
-  /*
+
+  /**
    * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
    * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
    * table3 (cint_101_300, cfloat_100£¬ cbool)
@@ -367,9 +368,7 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
    * cross join table3 t3
    * cross join table4 t4
    * where true
-   *
    */
-
   test("4 tables cross join where true") {
 
     /** execute join */
@@ -450,7 +449,7 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
   }
 
 
-  /*
+  /**
    * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
    * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
    * table3 (cint_101_300, cfloat_100£¬ cbool)
@@ -500,7 +499,7 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
   }
 
 
-  /*
+  /**
    * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
    * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
    * table3 (cint_101_300, cfloat_100£¬ cbool)
@@ -509,9 +508,9 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
    * from table1 t1 left outer join table2 t2 on t1.cint_1_200 = t2.cint_201_400
    * inner join table3 t3 on t1.cint_1_200 = t3.cint_101_300
    * where true
-   *
    */
-  test("""3 tables disjoint left outer join and inner join
+  test(
+    """3 tables disjoint left outer join and inner join
     where true""") {
 
     /** execute join */
@@ -599,19 +598,19 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
   }
 
 
-
-/*
- * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
- * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
- * table3 (cint_101_300, cfloat_100£¬ cbool)
- *
- * select *
- * from table1 t1 left outer join table2 t2 on t1.cint_1_200 = t2.cint_201_400
- * inner join table3 t3 on t1.cint_1_200 = t3.cint_101_300
- * where t1.cint_1_200 >= 101 and t1.cint_1_200 <= 150
- *
- */
-  test("""3 tables disjoint left outer join and inner join
+  /**
+   * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
+   * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
+   * table3 (cint_101_300, cfloat_100£¬ cbool)
+   *
+   * select *
+   * from table1 t1 left outer join table2 t2 on t1.cint_1_200 = t2.cint_201_400
+   * inner join table3 t3 on t1.cint_1_200 = t3.cint_101_300
+   * where t1.cint_1_200 >= 101 and t1.cint_1_200 <= 150
+   *
+   */
+  test(
+    """3 tables disjoint left outer join and inner join
     where cint_1_200 >= 101 AND cint_1_200 <= 150""") {
 
     /** execute join */
@@ -699,17 +698,17 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
   }
 
 
-  /*
- * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
- * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
- * table4 (cint_1_100, cdouble_50_149, cdate_100)
- *
- * select *
- * from table1 t1 left outer join table2 t2 on t1.cdouble_200 = t2.cdouble_1_100
- * inner join table4 t4 on t1.cdate_200 = t4.cdate_100
- * where true
- *
- */
+  /**
+   * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
+   * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
+   * table4 (cint_1_100, cdouble_50_149, cdate_100)
+   *
+   * select *
+   * from table1 t1 left outer join table2 t2 on t1.cdouble_200 = t2.cdouble_1_100
+   * inner join table4 t4 on t1.cdate_200 = t4.cdate_100
+   * where true
+   *
+   */
   test(
     """3 tables left outer join and inner join
     where true""") {
@@ -864,7 +863,7 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
     assert(join2.stats == joinExpectedStats, "joined table don't match expected table")
 
     /** define filter condition */
-      // t1.cdecimal_200 is not null and t2.cfloat_200 >= 50.0
+    // t1.cdecimal_200 is not null and t2.cfloat_200 >= 50.0
     val condition = And(IsNotNull(attrDecimal_200), GreaterThanOrEqual(attrFloat_200, Literal(50.0, FloatType)))
 
     /** define expected stats */
@@ -908,7 +907,6 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
   }
 
 
-
   /*
  * table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
  * table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
@@ -922,7 +920,8 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
  * where true
  *
  */
-  test("""3 tables left outer join and inner join with multi condiction
+  test(
+    """3 tables left outer join and inner join with multi condiction
     where true""") {
 
     /** execute join */
@@ -1034,7 +1033,8 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
    * where t2.cdecimal_100 >= 0.10 and t1.cdate_100 <= Date('2019-01-30')
    *
    */
-  test("""3 tables left outer join and inner join with multi condiction
+  test(
+    """3 tables left outer join and inner join with multi condiction
     where cdecimal_100 >= 0.10 and cdate_100 <= Date('2019-01-30')""") {
 
     /** execute join */
@@ -1155,7 +1155,8 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
  * where Not(t1.cint_1_200 < 3 AND t2.cfloat_200 >= 150.0)
  *
  */
-  test("""3 tables left outer join and inner join with multi condiction2
+  test(
+    """3 tables left outer join and inner join with multi condiction2
     where Not(t1.cint_1_200 < 3 AND t2.cfloat_200 >= 150.0)""") {
 
     /** execute join */
@@ -1274,34 +1275,26 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
 * table4 (cint_1_100, cdouble_50_149, cdate_100)
 *
 * select *
-* from table1 t1 left semi join table4 t4 on t1.cint_1_200 = t4.cint_1_100
+* from table1 t1 left semi join table4 t4 on t1.cdouble_200 = t4.cdouble_50_149
 * left anti join table2 t2 on t1.cdecimal_200 = t2.cdecimal_100
-* and t2.cdouble_1_100 = t4.cdouble_50_149
 * where true
 *
 */
-  test("""3 tables left semi join and left anti join with  condiction
+  test(
+    """3 tables left semi join and left anti join with  condiction
     where true""") {
 
     /** execute join */
-    val joinTypeLeft1 = EqualTo(nameToAttr("cint_1_200"), nameToAttr("cint_1_100"))
+    val joinType = Some(EqualTo(nameToAttr("cint_1_200"), nameToAttr("cint_1_100")))
 
-    val joinTypeRight1 = EqualTo(nameToAttr("cdouble_200"), nameToAttr("cdouble_50_149"))
+    val join = Join(table1, table4, LeftSemi, joinType)
 
-    val joinType = Some(And(joinTypeLeft1, joinTypeRight1))
+    val joinType2 = Some(EqualTo(nameToAttr("cdecimal_200"), nameToAttr("cdecimal_100")))
 
-    val join = Join(table1, table4, LeftOuter, joinType)
-
-    val joinTypeLeft2 = EqualTo(nameToAttr("cdecimal_200"), nameToAttr("cdecimal_100"))
-
-    val joinTypeRight2 = EqualTo(nameToAttr("cdouble_1_100"), nameToAttr("cdouble_50_149"))
-
-    val joinType2 = Some(And(joinTypeLeft2, joinTypeRight2))
-
-    val join2 = Join(join, table2, Inner, joinType2)
+    val join2 = Join(join, table2, LeftAnti, joinType2)
 
     /** join size define */
-    val joinSizeInBytes = BigInt(200L * (8 + (4 + 8 + 8 + 4) + (4 + 4 + 8 + 8) + (4 + 8 + 4)))
+    val joinSizeInBytes = BigInt(200L * (8 + (4 + 8 + 8 + 4)))
     val joinRowCount = BigInt(200L)
 
     val joinExpectedStats = Statistics(
@@ -1313,30 +1306,10 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
           max = Some(200), nullCount = 0, avgLen = 4, maxLen = 4),
         nameToAttr("cdouble_200") -> ColumnStat(distinctCount = 200, min = Some(1.0),
           max = Some(200.0), nullCount = 0, avgLen = 8, maxLen = 8),
-
-        /** decimal type change */
-        nameToAttr("cdecimal_200") -> ColumnStat(distinctCount = 100, min = Some(Decimal(0.01)),
-          max = Some(Decimal(1.0)), nullCount = 0, avgLen = 8, maxLen = 8),
+        nameToAttr("cdecimal_200") -> ColumnStat(distinctCount = 200, min = Some(decMin_200),
+          max = Some(decMax_200), nullCount = 0, avgLen = 8, maxLen = 8),
         nameToAttr("cdate_200") -> ColumnStat(distinctCount = 200, min = Some(dMin_200),
-          max = Some(dMax_200), nullCount = 0, avgLen = 4, maxLen = 4),
-
-        nameToAttr("cint_1_100") -> ColumnStat(distinctCount = 100, min = Some(1),
-          max = Some(100), nullCount = 0, avgLen = 4, maxLen = 4),
-        nameToAttr("cdouble_50_149") -> ColumnStat(distinctCount = 100, min = Some(50.0),
-          max = Some(100.0), nullCount = 0, avgLen = 8, maxLen = 8),
-        nameToAttr("cdate_100") -> ColumnStat(distinctCount = 100, min = Some(dMin_100),
-          max = Some(dMax_100), nullCount = 0, avgLen = 4, maxLen = 4),
-
-        nameToAttr("cint_201_400") -> ColumnStat(distinctCount = 200, min = Some(201),
-          max = Some(400), nullCount = 0, avgLen = 4, maxLen = 4),
-        nameToAttr("cfloat_200") -> ColumnStat(distinctCount = 200, min = Some(1.0),
-          max = Some(200.0), nullCount = 0, avgLen = 4, maxLen = 4),
-
-        /** decimal type change */
-        nameToAttr("cdecimal_100") -> ColumnStat(distinctCount = 100, min = Some(Decimal(0.01)),
-          max = Some(Decimal(1.0)), nullCount = 0, avgLen = 8, maxLen = 8),
-        nameToAttr("cdouble_1_100") -> ColumnStat(distinctCount = 100, min = Some(50.0),
-          max = Some(100.0), nullCount = 0, avgLen = 8, maxLen = 8))))
+          max = Some(dMax_200), nullCount = 0, avgLen = 4, maxLen = 4))))
 
     /** col data compare */
     join2.stats.attributeStats.foreach { kv =>
@@ -1347,8 +1320,7 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
     assert(join2.stats == joinExpectedStats, "joined table don't match expected table")
 
     /** define filter condition */
-    val condition = Not(And(LessThan(attrInt_1_200, Literal(3)),
-      GreaterThanOrEqual(attrFloat_200, Literal(150.0, FloatType))))
+    val condition = TrueLiteral
 
     /** define expected stats */
     val expectedRowCount = 200L
@@ -1359,38 +1331,98 @@ class FilterJoinEstimationSuite extends StatsEstimationTestBase {
       nameToAttr("cdouble_200") -> ColumnStat(distinctCount = 200,
         min = Some(1.0), max = Some(200.0), nullCount = 0, avgLen = 8, maxLen = 8),
 
-      nameToAttr("cdecimal_200") -> ColumnStat(distinctCount = 100,
-        min = Some(Decimal(0.01)), max = Some(Decimal(1.0)), nullCount = 0, avgLen = 8, maxLen = 8),
+      nameToAttr("cdecimal_200") -> ColumnStat(distinctCount = 200,
+        min = Some(decMin_200), max = Some(decMax_200), nullCount = 0, avgLen = 8, maxLen = 8),
 
       nameToAttr("cdate_200") -> ColumnStat(distinctCount = 200,
-        min = Some(dMin_200), max = Some(dMax_200), nullCount = 0, avgLen = 4, maxLen = 4),
-
-      nameToAttr("cint_1_100") -> ColumnStat(distinctCount = 100,
-        min = Some(1), max = Some(100), nullCount = 0, avgLen = 4, maxLen = 4),
-
-      nameToAttr("cdouble_50_149") -> ColumnStat(distinctCount = 100,
-        min = Some(50.0), max = Some(100.0), nullCount = 0, avgLen = 8, maxLen = 8),
-
-      nameToAttr("cdate_100") -> ColumnStat(distinctCount = 100,
-        min = Some(dMin_100), max = Some(dMax_100),
-        nullCount = 0, avgLen = 4, maxLen = 4),
-
-      nameToAttr("cint_201_400") -> ColumnStat(distinctCount = 200,
-        min = Some(201), max = Some(400), nullCount = 0, avgLen = 4, maxLen = 4),
-
-      nameToAttr("cfloat_200") -> ColumnStat(distinctCount = 200,
-        min = Some(1.0), max = Some(200.0), nullCount = 0, avgLen = 4, maxLen = 4),
-
-      nameToAttr("cdecimal_100") -> ColumnStat(distinctCount = 100,
-        min = Some(Decimal(0.01)), max = Some(Decimal(1.0)), nullCount = 0, avgLen = 8, maxLen = 8),
-
-      nameToAttr("cdouble_1_100") -> ColumnStat(distinctCount = 100,
-        min = Some(50.0), max = Some(100.0),
-        nullCount = 0, avgLen = 8, maxLen = 8))
+        min = Some(dMin_200), max = Some(dMax_200), nullCount = 0, avgLen = 4, maxLen = 4))
 
     validateEstimatedStats(Filter(condition, join2), expectedColStats,
       expectedRowCount = expectedRowCount)
   }
+
+
+  /*
+* table1 (cint_1_200, cdouble_200, cdecimal_200, cdate_200)
+* table2 (cint_201_400, cfloat_200, cdecimal_100, cdouble_1_100)
+* table4 (cint_1_100, cdouble_50_149, cdate_100)
+*
+* select *
+* from table1 t1 left semi join table4 t4 on t1.cdouble_200 = t4.cdouble_50_149
+* left anti join table2 t2 on t1.cdecimal_200 = t2.cdecimal_100
+* where t1.cdate_200 >= Date('2019-01-31') and t1.cint_1_200 <= 100
+* and t1.cdouble_200 <= 80.0
+*
+*/
+  test(
+    """3 tables left semi join and left anti join with  condiction
+    where t1.cdate_200 >= Date('2019-01-31') and t1.cint_1_200 <= 100 and
+     t1.cdouble_200 <= 80.0""") {
+
+    /** execute join */
+    val joinType = Some(EqualTo(nameToAttr("cint_1_200"), nameToAttr("cint_1_100")))
+
+    val join = Join(table1, table4, LeftSemi, joinType)
+
+    val joinType2 = Some(EqualTo(nameToAttr("cdecimal_200"), nameToAttr("cdecimal_100")))
+
+    val join2 = Join(join, table2, LeftAnti, joinType2)
+
+    /** join size define */
+    val joinSizeInBytes = BigInt(200L * (8 + (4 + 8 + 8 + 4)))
+    val joinRowCount = BigInt(200L)
+
+    val joinExpectedStats = Statistics(
+      sizeInBytes = joinSizeInBytes,
+      rowCount = Some(joinRowCount),
+      // Keep the column stat from both sides unchanged.
+      attributeStats = AttributeMap(Seq(
+        nameToAttr("cint_1_200") -> ColumnStat(distinctCount = 200, min = Some(1),
+          max = Some(200), nullCount = 0, avgLen = 4, maxLen = 4),
+        nameToAttr("cdouble_200") -> ColumnStat(distinctCount = 200, min = Some(1.0),
+          max = Some(200.0), nullCount = 0, avgLen = 8, maxLen = 8),
+        nameToAttr("cdecimal_200") -> ColumnStat(distinctCount = 200, min = Some(decMin_200),
+          max = Some(decMax_200), nullCount = 0, avgLen = 8, maxLen = 8),
+        nameToAttr("cdate_200") -> ColumnStat(distinctCount = 200, min = Some(dMin_200),
+          max = Some(dMax_200), nullCount = 0, avgLen = 4, maxLen = 4))))
+
+    /** col data compare */
+    join2.stats.attributeStats.foreach { kv =>
+      val filterColumnStat = joinExpectedStats.attributeStats.get(kv._1).get
+      assert(filterColumnStat == kv._2, "join col data different")
+
+    }
+    assert(join2.stats == joinExpectedStats, "joined table don't match expected table")
+
+    /** define filter condition */
+    val d20190131 = DateTimeUtils.fromJavaDate(Date.valueOf("2019-01-31"))
+
+    val subCondition = And(GreaterThanOrEqual(attrDate_200, Literal(d20190131, DateType)),
+      LessThanOrEqual(attrInt_1_200, Literal(100)))
+
+    val condition = And(subCondition, LessThanOrEqual(attrDouble_200,
+      Literal(80.0, DoubleType)))
+
+    /** define expected stats */
+    val expectedRowCount = 34L
+    val expectedColStats = Seq(
+      nameToAttr("cint_1_200") -> ColumnStat(distinctCount = 34,
+        min = Some(1), max = Some(100), nullCount = 0, avgLen = 4, maxLen = 4),
+
+      nameToAttr("cdouble_200") -> ColumnStat(distinctCount = 34,
+        min = Some(1.0), max = Some(80.0), nullCount = 0, avgLen = 8, maxLen = 8),
+
+      nameToAttr("cdecimal_200") -> ColumnStat(distinctCount = 34,
+        min = Some(decMin_200), max = Some(decMax_200), nullCount = 0, avgLen = 8, maxLen = 8),
+
+      nameToAttr("cdate_200") -> ColumnStat(distinctCount = 34,
+        min = Some(DateTimeUtils.fromJavaDate(Date.valueOf("2019-01-31"))),
+        max = Some(dMax_200), nullCount = 0, avgLen = 4, maxLen = 4))
+
+    validateEstimatedStats(Filter(condition, join2), expectedColStats,
+      expectedRowCount = expectedRowCount)
+  }
+
 
   // 4 tables join: 8 unit
 
