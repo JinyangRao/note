@@ -12,18 +12,17 @@
 - **\# Issue编号**  
 - 用户名/仓库名\#编号  
 ### 1.3 GitHub主要功能
-+ **Git仓库**
-    vvvvccguceehtuurbujnnhchfkevtnijrjbrrdvriltj
++ **Git仓库**  
     可以免费建立一个GitHub提供的Git仓库。
-+ **Organization**
++ **Organization**  
     是以交流群或IT 小团体的形式进行软件开发。
-+ **Issue**
++ **Issue**  
      &nbsp; &nbsp;是将一个任务或问题分配给一个Issue 进行追踪和管理的功能
     可以像BUG 管理系统或TiDD（Ticket-driven Development）的
     Ticket 一样使用。
-+ **Wiki**
++ **Wiki**  
     文档。
-+ **Pull Request**
++ **Pull Request**  
     &nbsp; &nbsp;开发者向GitHub 的仓库推送更改或功能添加后，可以通过Pull
     Request 功能向别人的仓库提出申请，请求对方合并。
      &nbsp; &nbsp;Pull Request 送出后，目标仓库的管理者等人将能够查看Pull
