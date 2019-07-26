@@ -1,0 +1,74 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - TransformStreamDemo",
+            "request": "launch",
+            "mainClass": "TransformStreamDemo",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ReadIn",
+            "request": "launch",
+            "mainClass": "ReadIn",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - MyBufferedInputStreamDemo",
+            "request": "launch",
+            "mainClass": "MyBufferedInputStreamDemo",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - CopyPictureDemo",
+            "request": "launch",
+            "mainClass": "CopyPictureDemo",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - FileOutPutStreamDemo",
+            "request": "launch",
+            "mainClass": "FileOutPutStreamDemo",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - BufferedReaderDemo",
+            "request": "launch",
+            "mainClass": "BufferedReaderDemo",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - BufferedWriterDemo",
+            "request": "launch",
+            "mainClass": "BufferedWriterDemo",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - FileReaderDemo02",
+            "request": "launch",
+            "mainClass": "FileReaderDemo02",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - FileReaderDemo",
+            "request": "launch",
+            "mainClass": "FileReaderDemo",
+            "projectName": "javaIO_da5618c2"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - FileWriterDemo",
+            "request": "launch",
+            "mainClass": "FileWriterDemo",
+            "projectName": "javaIO_da5618c2"
+        }
+    ]
+}

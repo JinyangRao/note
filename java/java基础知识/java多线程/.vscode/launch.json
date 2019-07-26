@@ -1,0 +1,58 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - YieldThread",
+            "request": "launch",
+            "mainClass": "YieldThread"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - YieldThreadDemo",
+            "request": "launch",
+            "mainClass": "YieldThreadDemo"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - JoinThreadDemo",
+            "request": "launch",
+            "mainClass": "JoinThreadDemo"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - DaemonThreadDemo",
+            "request": "launch",
+            "mainClass": "DaemonThreadDemo"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - StopThreadDemo",
+            "request": "launch",
+            "mainClass": "StopThreadDemo"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ProducerConsumerDemo",
+            "request": "launch",
+            "mainClass": "ProducerConsumerDemo"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - WaitNotify02",
+            "request": "launch",
+            "mainClass": "WaitNotify02"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - WaitNotify",
+            "request": "launch",
+            "mainClass": "WaitNotify"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - InputOutputDemo",
+            "request": "launch",
+            "mainClass": "InputOutputDemo"
+        }
+    ]
+}
